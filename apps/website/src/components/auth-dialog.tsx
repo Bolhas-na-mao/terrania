@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { type FieldErrors, useForm } from "react-hook-form";
 
 import {
+  authEmailSchema,
   type SignInFormValues,
   type SignInInput,
   type SignUpFormValues,
@@ -51,12 +52,12 @@ const toFieldErrors = <T extends Record<string, unknown>>(
     return errors;
   }, {}) as FieldErrors<T>;
 
-const validateWithSchema = async <TInput extends Record<string, unknown>, TOutput>(
+const validateWithSchema = async <TInput extends Record<string, unknown>>(
   values: TInput,
   schema: {
     safeParseAsync: (value: unknown) => Promise<
       | {
-          data: TOutput;
+          data: unknown;
           success: true;
         }
       | {
@@ -76,7 +77,7 @@ const validateWithSchema = async <TInput extends Record<string, unknown>, TOutpu
   if (result.success) {
     return {
       errors: {},
-      values: result.data,
+      values,
     };
   }
 
@@ -108,7 +109,7 @@ const rememberMeLabel = "Keep me signed in on this device";
 
 const SignInForm = ({ onSuccess }: { onSuccess: SessionRefetch }) => {
   const [formError, setFormError] = useState<string | null>(null);
-  const form = useForm<SignInFormValues, undefined, SignInInput>({
+  const form = useForm<SignInFormValues>({
     defaultValues: {
       email: "",
       password: "",
@@ -120,7 +121,12 @@ const SignInForm = ({ onSuccess }: { onSuccess: SessionRefetch }) => {
   const onSubmit = form.handleSubmit(async (values) => {
     setFormError(null);
 
-    const result = await authClient.signIn.email(values);
+    const payload: SignInInput = {
+      email: authEmailSchema.parse(values.email),
+      password: values.password,
+      rememberMe: values.rememberMe,
+    };
+    const result = await authClient.signIn.email(payload);
 
     if (result.error) {
       setFormError(getAuthErrorMessage(result.error));
@@ -143,6 +149,7 @@ const SignInForm = ({ onSuccess }: { onSuccess: SessionRefetch }) => {
           autoComplete="email"
           id="sign-in-email"
           placeholder="you@example.com"
+          type="email"
           {...form.register("email")}
         />
         <FieldError message={form.formState.errors.email?.message} />
@@ -193,7 +200,7 @@ const SignInForm = ({ onSuccess }: { onSuccess: SessionRefetch }) => {
 
 const SignUpForm = ({ onSuccess }: { onSuccess: SessionRefetch }) => {
   const [formError, setFormError] = useState<string | null>(null);
-  const form = useForm<SignUpFormValues, undefined, SignUpInput>({
+  const form = useForm<SignUpFormValues>({
     defaultValues: {
       email: "",
       name: "",
@@ -206,7 +213,13 @@ const SignUpForm = ({ onSuccess }: { onSuccess: SessionRefetch }) => {
   const onSubmit = form.handleSubmit(async (values) => {
     setFormError(null);
 
-    const result = await authClient.signUp.email(values);
+    const payload: SignUpInput = {
+      email: authEmailSchema.parse(values.email),
+      name: values.name,
+      password: values.password,
+      rememberMe: values.rememberMe,
+    };
+    const result = await authClient.signUp.email(payload);
 
     if (result.error) {
       setFormError(getAuthErrorMessage(result.error));
@@ -241,6 +254,7 @@ const SignUpForm = ({ onSuccess }: { onSuccess: SessionRefetch }) => {
           autoComplete="email"
           id="sign-up-email"
           placeholder="you@example.com"
+          type="email"
           {...form.register("email")}
         />
         <FieldError message={form.formState.errors.email?.message} />

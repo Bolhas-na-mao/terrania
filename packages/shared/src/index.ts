@@ -6,7 +6,10 @@ export const AUTH_PASSWORD_MIN_LENGTH = 8;
 export const AUTH_PASSWORD_MAX_LENGTH = 72;
 export const AUTH_NAME_MAX_LENGTH = 60;
 
-export const authEmailSchema = z.email("Enter a valid email address").trim().toLowerCase();
+export const authEmailSchema = z.preprocess(
+  (value) => (typeof value === "string" ? value.trim().toLowerCase() : value),
+  z.string().email("Enter a valid email address"),
+);
 
 export const authPasswordSchema = z
   .string()
@@ -38,10 +41,28 @@ export const signUpSchema = z.object({
   rememberMe: z.boolean().default(true),
 });
 
-export type SignInInput = z.infer<typeof signInSchema>;
-export type SignInFormValues = z.input<typeof signInSchema>;
-export type SignUpInput = z.infer<typeof signUpSchema>;
-export type SignUpFormValues = z.input<typeof signUpSchema>;
+export type SignInInput = {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+};
+export type SignInFormValues = {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+};
+export type SignUpInput = {
+  email: string;
+  name: string;
+  password: string;
+  rememberMe: boolean;
+};
+export type SignUpFormValues = {
+  email: string;
+  name: string;
+  password: string;
+  rememberMe: boolean;
+};
 
 export type ApiHealthResponse = {
   appName: string;

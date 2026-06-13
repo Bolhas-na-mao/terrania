@@ -23,6 +23,7 @@ db-migrate:
 
 dev:
   docker compose up -d postgres
+  timeout 30 bash -lc 'until docker compose exec -T postgres pg_isready -U "${POSTGRES_USER:-postgres}" -d "${POSTGRES_DB:-terrania}" >/dev/null 2>&1; do sleep 1; done'
   pnpm --dir packages/db exec drizzle-kit migrate
   vp run --filter './apps/*' dev
 

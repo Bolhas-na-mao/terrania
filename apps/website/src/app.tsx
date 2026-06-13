@@ -31,13 +31,14 @@ export const App = () => {
 
   const handleSignOut = async () => {
     setIsSigningOut(true);
+    try {
+      const result = await authClient.signOut();
 
-    const result = await authClient.signOut();
-
-    setIsSigningOut(false);
-
-    if (!result.error) {
-      await session.refetch();
+      if (!result.error) {
+        await session.refetch();
+      }
+    } finally {
+      setIsSigningOut(false);
     }
   };
 

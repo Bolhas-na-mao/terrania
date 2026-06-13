@@ -1,3 +1,4 @@
+import { sql } from "drizzle-orm";
 import { boolean, index, pgTable, text, timestamp, uniqueIndex } from "drizzle-orm/pg-core";
 
 export const users = pgTable(
@@ -17,7 +18,7 @@ export const users = pgTable(
       withTimezone: true,
     }).notNull(),
   },
-  (table) => [uniqueIndex("user_email_unique").on(table.email)],
+  (table) => [uniqueIndex("user_email_unique_ci").on(sql`lower(${table.email})`)],
 );
 
 export const sessions = pgTable(

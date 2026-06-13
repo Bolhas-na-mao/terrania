@@ -34,12 +34,18 @@ export const signInSchema = z.object({
   rememberMe: z.boolean().default(true),
 });
 
-export const signUpSchema = z.object({
-  email: authEmailSchema,
-  name: authNameSchema,
-  password: authPasswordSchema,
-  rememberMe: z.boolean().default(true),
-});
+export const signUpSchema = z
+  .object({
+    email: authEmailSchema,
+    name: authNameSchema,
+    password: authPasswordSchema,
+    passwordConfirmation: z.string(),
+    rememberMe: z.boolean().default(true),
+  })
+  .refine((value) => value.password === value.passwordConfirmation, {
+    message: "Passwords do not match",
+    path: ["passwordConfirmation"],
+  });
 
 export type SignInInput = {
   email: string;
@@ -61,6 +67,7 @@ export type SignUpFormValues = {
   email: string;
   name: string;
   password: string;
+  passwordConfirmation: string;
   rememberMe: boolean;
 };
 

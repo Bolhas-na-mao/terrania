@@ -24,6 +24,7 @@ import {
 } from "./ui/dialog.tsx";
 import { Input } from "./ui/input.tsx";
 import { Label } from "./ui/label.tsx";
+import { PasswordInput } from "./ui/password-input.tsx";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs.tsx";
 
 type AuthDialogProps = {
@@ -157,11 +158,10 @@ const SignInForm = ({ onSuccess }: { onSuccess: SessionRefetch }) => {
 
       <div className="space-y-2">
         <Label htmlFor="sign-in-password">Password</Label>
-        <Input
+        <PasswordInput
           autoComplete="current-password"
           id="sign-in-password"
           placeholder="Enter your password"
-          type="password"
           {...form.register("password")}
         />
         <FieldError message={form.formState.errors.password?.message} />
@@ -205,6 +205,7 @@ const SignUpForm = ({ onSuccess }: { onSuccess: SessionRefetch }) => {
       email: "",
       name: "",
       password: "",
+      passwordConfirmation: "",
       rememberMe: true,
     },
     resolver: (values) => validateWithSchema(values, signUpSchema),
@@ -230,6 +231,7 @@ const SignUpForm = ({ onSuccess }: { onSuccess: SessionRefetch }) => {
       email: "",
       name: "",
       password: "",
+      passwordConfirmation: "",
       rememberMe: values.rememberMe,
     });
     await onSuccess();
@@ -262,14 +264,24 @@ const SignUpForm = ({ onSuccess }: { onSuccess: SessionRefetch }) => {
 
       <div className="space-y-2">
         <Label htmlFor="sign-up-password">Password</Label>
-        <Input
+        <PasswordInput
           autoComplete="new-password"
           id="sign-up-password"
           placeholder="Create a password"
-          type="password"
           {...form.register("password")}
         />
         <FieldError message={form.formState.errors.password?.message} />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="sign-up-password-confirmation">Confirm password</Label>
+        <PasswordInput
+          autoComplete="new-password"
+          id="sign-up-password-confirmation"
+          placeholder="Confirm your password"
+          {...form.register("passwordConfirmation")}
+        />
+        <FieldError message={form.formState.errors.passwordConfirmation?.message} />
       </div>
 
       <div className="flex items-center gap-2">

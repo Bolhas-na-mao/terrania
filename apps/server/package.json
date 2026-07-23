@@ -13,7 +13,6 @@
     "@fastify/cors": "catalog:",
     "@terrania/db": "workspace:*",
     "@terrania/shared": "workspace:*",
-    "better-auth": "catalog:",
     "fastify": "catalog:",
     "pino": "catalog:",
     "zod": "catalog:"

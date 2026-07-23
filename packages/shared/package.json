@@ -11,9 +11,7 @@
     "test": "vp test",
     "check": "vp check"
   },
-  "dependencies": {
-    "zod": "catalog:"
-  },
+  "dependencies": {},
   "devDependencies": {
     "typescript": "catalog:"
   }

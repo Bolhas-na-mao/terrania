@@ -6,8 +6,6 @@ import { buildApp } from "../app.ts";
 import type { ServerEnv } from "../config.ts";
 
 const testEnv: ServerEnv = {
-  BETTER_AUTH_SECRET: "better-auth-secret-for-tests-that-is-long-enough",
-  BETTER_AUTH_URL: "http://localhost:3001",
   CORS_ORIGIN: "http://localhost:3000",
   DATABASE_URL: "postgres://postgres:postgres@127.0.0.1:5432/terrania",
   LOG_LEVEL: "fatal",

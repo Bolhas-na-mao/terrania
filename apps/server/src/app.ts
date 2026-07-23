@@ -3,10 +3,8 @@ import Fastify from "fastify";
 
 import { createDatabase } from "@terrania/db";
 
-import { buildAuth } from "./auth.ts";
 import type { ServerEnv } from "./config.ts";
 import { createLogger } from "./logger.ts";
-import { authRoutes } from "./routes/auth.ts";
 import { healthRoutes } from "./routes/health.ts";
 
 export const buildApp = (env: ServerEnv) => {
@@ -26,9 +24,7 @@ export const buildApp = (env: ServerEnv) => {
     logger,
     logQueries: env.LOG_QUERIES,
   });
-  const auth = buildAuth(database, env);
 
-  app.decorate("auth", auth);
   app.decorate("database", database);
 
   app.addHook("onRequest", async (request) => {
@@ -72,7 +68,6 @@ export const buildApp = (env: ServerEnv) => {
   });
 
   app.register(healthRoutes);
-  app.register(authRoutes);
 
   return app;
 };

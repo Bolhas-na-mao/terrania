@@ -2,6 +2,8 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import type { Logger as DrizzleLogger } from "drizzle-orm/logger";
 import postgres from "postgres";
 
+import * as schema from "./schema/index.ts";
+
 type QueryLoggerTarget = {
   debug: (object: Record<string, unknown>, message: string) => void;
 };
@@ -46,7 +48,9 @@ export const createDatabase = ({
 
   return drizzle(sql, {
     logger: logger && logQueries ? new QueryLogger(logger) : false,
+    schema,
   });
 };
 
 export type DatabaseClient = ReturnType<typeof createDatabase>;
+export { schema as databaseSchema };

@@ -8,6 +8,8 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json --noEmit",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
     "test": "vp test",
     "check": "vp check"
   },

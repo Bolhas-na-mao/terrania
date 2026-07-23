@@ -8,6 +8,8 @@
     "dev": "vp run --filter './apps/*' dev",
     "dev:website": "vp run website#dev",
     "dev:server": "vp run server#dev",
+    "db:generate": "pnpm --dir packages/db exec drizzle-kit generate",
+    "db:migrate": "pnpm --dir packages/db exec drizzle-kit migrate",
     "prepare": "vp config"
   },
   "devDependencies": {

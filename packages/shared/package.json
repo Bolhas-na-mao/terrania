@@ -11,6 +11,7 @@
     "test": "vp test",
     "check": "vp check"
   },
+  "dependencies": {},
   "devDependencies": {
     "typescript": "catalog:"
   }

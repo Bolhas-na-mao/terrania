@@ -5,3 +5,5 @@ export type ApiHealthResponse = {
   status: "ok";
   timestamp: string;
 };
+
+export * from "./quiz/index.ts";

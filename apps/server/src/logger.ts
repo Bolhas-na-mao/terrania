@@ -11,7 +11,7 @@ export const createLogger = (env: ServerEnv) =>
           options: {
             colorize: true,
             ignore: "pid,hostname",
-            translateTime: "SYS:standard",
+            translateTime: "SYS:mmm dd yyyy, HH:MM:ss.l",
           },
         }
       : undefined,

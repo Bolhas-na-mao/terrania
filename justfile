@@ -19,11 +19,11 @@ db-generate:
   pnpm --dir packages/db exec drizzle-kit generate
 
 db-migrate:
-  pnpm --dir packages/db exec drizzle-kit migrate
+  if test -f packages/db/drizzle/meta/_journal.json; then pnpm --dir packages/db exec drizzle-kit migrate; else echo "No database migrations to apply"; fi
 
 dev:
   docker compose up -d --wait postgres
-  pnpm --dir packages/db exec drizzle-kit migrate
+  just db-migrate
   vp run --filter './apps/*' dev
 
 check:
